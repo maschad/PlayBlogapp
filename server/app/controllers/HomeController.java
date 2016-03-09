@@ -47,6 +47,51 @@ public class HomeController extends Controller {
         }
     }
 
+    public static Result login(){
+        Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+        if (loginForm.hasErrors()) {
+            return badRequest(loginForm.errorsAsJson());
+        }
+        Login loggingInUser = loginForm.get();
+        User user = User.findByEmailAndPassword(loggingInUser.email, loggingInUser.password);
+        if(user == null) {
+            return badRequest(buildJsonResponse("error", "Incorrect email or password"));
+        } else {
+            session().clear();
+            session("username", loggingInUser.email);
+
+            ObjectNode wrapper = Json.newObject();
+            ObjectNode msg = Json.newObject();
+            msg.put("message", "Logged in successfully");
+            msg.put("user", loggingInUser.email);
+            wrapper.put("success", msg);
+            return ok(wrapper);
+        }
+    }
+
+
+    public static Result logout() {
+        session().clear();
+        return ok(buildJsonResponse("success", "Logged out successfully"));
+    }
+
+    public static Result isAuthenticated() {
+        if(session().get("username") == null) {
+            return unauthorized();
+        } else {
+            ObjectNode wrapper = Json.newObject();
+            ObjectNode msg = Json.newObject();
+            msg.put("message", "User is logged in already");
+            msg.put("user", session().get("username"));
+            wrapper.put("success", msg);
+            return ok(wrapper);
+        }
+    }
+
+    public static class Login extends UserForm {
+        @Constraints.Required
+        public String password;
+    }
     public static class UserForm {
         @Constraints.Required
         @Constraints.Email

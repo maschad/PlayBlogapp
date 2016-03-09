@@ -36,12 +36,24 @@
             <a class="navbar-brand" href="#/">client</a>
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/signup">Signup</a></li>
+          <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="MenuCtrl">
+            <ul class="nav navbar-nav pull-right" ng-hide="isLoggedIn">
+              <li><a ng-href="/#/signup">Sign up!</a></li>
+              <li><a ng-href="/#/login">Login</a></li>
             </ul>
+            <div class="btn-group pull-right acc-button" ng-show="isLoggedIn">
+              <button type="button" class="btn btn-default">{{ username }}</button>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a ng-href="/#/dashboard">Dashboard</a></li>
+                <li class="divider"></li>
+                <li><a href="#" ng-click="logout()">Logout</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -53,6 +65,7 @@
       </div>
       <div ng-view=""></div>
     </div>
+
 
     <div class="footer">
       <div class="container">
@@ -93,6 +106,10 @@
         <script src="scripts/controllers/signup.js"></script>
         <script src="scripts/services/alerts.js"></script>
         <script src="scripts/controllers/alerts.js"></script>
+        <script src="scripts/controllers/dashboard.js"></script>
+        <script src="scripts/services/user.js"></script>
+        <script src="scripts/controllers/menu.js"></script>
+        <script src="scripts/controllers/login.js"></script>
         <!-- endbuild -->
 </body>
 </html>
