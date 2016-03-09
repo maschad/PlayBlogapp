@@ -8,16 +8,28 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('SignupCtrl', function ($scope,$http,$log) {
-    $scope.signup = function () {
+  .controller('SignupCtrl', function ($scope,$http,$location,alertService) {
+    $scope.signup = function() {
       var payload = {
         email : $scope.email,
         password : $scope.password
       };
 
       $http.post('app/signup', payload)
-        .success(function(data) {
-          $log.debug(data);
-        });
+        .error(function(data, status) {
+          if(status === 400) {
+            angular.forEach(data, function(value, key) {
+              if(key === 'email' || key === 'password') {
+                alertService.add('danger', key + ' : ' + value);
+              } else {
+                alertService.add('danger', value.message);
+              }
+            });
+          }
+          if(status === 500) {
+            alertService.add('danger', 'Internal server error!');
+          }
+        })
+
     };
   });
