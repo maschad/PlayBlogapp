@@ -4,9 +4,15 @@ package models;
  * Created by chad on 3/8/16.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Entity
 public class User extends Model {
