@@ -47,7 +47,7 @@ public class HomeController extends Controller {
         }
     }
 
-    public static Result login(){
+    public Result login(){
         Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
         if (loginForm.hasErrors()) {
             return badRequest(loginForm.errorsAsJson());
@@ -70,12 +70,12 @@ public class HomeController extends Controller {
     }
 
 
-    public static Result logout() {
+    public Result logout() {
         session().clear();
         return ok(buildJsonResponse("success", "Logged out successfully"));
     }
 
-    public static Result isAuthenticated() {
+    public Result isAuthenticated() {
         if(session().get("username") == null) {
             return unauthorized();
         } else {
@@ -104,7 +104,7 @@ public class HomeController extends Controller {
         public String password;
     }
 
-    private static ObjectNode buildJsonResponse(String type, String message) {
+    static ObjectNode buildJsonResponse(String type, String message) {
         ObjectNode wrapper = Json.newObject();
         ObjectNode msg = Json.newObject();
         msg.put("message", message);

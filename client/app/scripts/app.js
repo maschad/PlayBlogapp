@@ -36,6 +36,10 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
+      .when('/addpost', {
+        templateUrl: 'views/addpost.html',
+        controller: 'AddpostCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
